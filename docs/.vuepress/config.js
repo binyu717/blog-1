@@ -3,7 +3,7 @@ module.exports = {
   description: '自从进入前端圈子以来，记录的一些自己所经历过的技术栈。',
   base: '/blog/',
   head: [
-    ['link', { rel: 'shortcut icon', type: "image/x-icon", href: `/favicon.ico` }]
+    ['link', { rel: 'shortcut icon', type: "image/x-icon", href: `./favicon.ico` }]
   ],
   themeConfig: {
     nav: [
@@ -15,7 +15,9 @@ module.exports = {
         title: '基础',
         collapsable: true,
         children: [
-          ['/base/html', '所见html']
+          ['/base/html', '所见所闻之html'],
+          ['/base/css', '所见所闻之css'],
+          ['/base/js', '所见所闻之javascript']
         ]
       }
     ]
