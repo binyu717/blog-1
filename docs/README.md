@@ -1,6 +1,6 @@
 ---
 home: true
-heroImage: /avatar.jpg
+heroImage: /avatar.png
 actionText: 开始 →
 actionLink: /base/html
 features:

@@ -22,7 +22,15 @@ module.exports = {
           ['/base/memory', '所见所闻之内存'],
           ['/base/network', '所见所闻之网络'],
           ['/base/optimize', '所见所闻之优化'],
-          ['/base/compatible', '所见所闻之兼容']
+          ['/base/compatible', '所见所闻之兼容'],
+          ['/base/bug', '所见所闻之bug']
+        ]
+      },
+      {
+        title: '高级',
+        children: [
+          ['/senior/jquery', '所见所闻之jquery'],
+          ['/senior/vue', '所见所闻之vue'],
         ]
       }
     ]
