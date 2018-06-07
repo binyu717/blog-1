@@ -78,7 +78,7 @@
 <!-- 编码统一 -->
 <meta charset="UTF-8">
 <!-- 作者 -->
-<meta name="author" content="万鹏">
+<meta name="author" content="你的名字">
 <!-- 描述 -->
 <meta name="description" content="一个基于vue的项目">
 <!-- 关键字 -->
