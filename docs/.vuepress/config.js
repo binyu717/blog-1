@@ -23,6 +23,8 @@ module.exports = {
           ['/base/network', '所见所闻之网络'],
           ['/base/optimize', '所见所闻之优化'],
           ['/base/compatible', '所见所闻之兼容'],
+          ['/base/data', '所见所闻之数据结构'],
+          ['/base/design', '所见所闻之设计模式'],
           ['/base/bug', '所见所闻之bug']
         ]
       },
