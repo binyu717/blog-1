@@ -25,6 +25,7 @@ module.exports = {
           ['/base/compatible', '所见所闻之兼容'],
           ['/base/data', '所见所闻之数据结构'],
           ['/base/design', '所见所闻之设计模式'],
+          ['/base/mobile', '所见所闻之H5开发'],
           ['/base/bug', '所见所闻之bug']
         ]
       },

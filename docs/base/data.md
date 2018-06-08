@@ -220,182 +220,188 @@
 - 完全二叉树：指除最后一层节点外的其它层节点都是满的（都有两个子节点），且最后一层节点从左向右集中分布（左边节点中间没有空节点）;
 
 ### 堆
-- 简介：利用完全二叉树结构来维护的一种数据结构，堆又分为大根堆（每个二叉树中父节点的值最大）和小根堆（每个二叉树中父节点的值最小）,堆通常带有上浮、下沉、插入、弹出、取顶、堆排序等方法;
+- 简介：利用完全二叉树结构来维护的一种数据结构，堆又分为大根堆（每个二叉树中父节点的值最大）和小根堆（每个二叉树中父节点的值最小）;
 - 图例（出处见顶部推荐文章）：
 - <img src="https://camo.githubusercontent.com/cf3c66d0d2ed67af70a8bc500fc215526d266a0d/68747470733a2f2f75706c6f61642e77696b696d656469612e6f72672f77696b6970656469612f636f6d6d6f6e732f332f33382f4d61782d486561702e737667" alt="堆">
-- js实现
+- js实现小根堆
 ```js
     class MinHeap {
-        constructor() {
+        constructor(arr = []) {
             this.heap = [];
+
+            if (arr instanceof Array) {
+                arr.forEach(node => this.add(node));
+            }
         }
 
-        /**
-         * 添加节点
-         */
         add(node) {
             this.heap.push(node);
-            this.shiftUp();
-            return this;
+            this.up();
         }
 
-        shiftUp(customStartIndex) {
-            let currentIndex = customStartIndex || this.heapContainer.length - 1;
+        up(startIndex) {
+            let currentIndex = startIndex || this.heap.length - 1;
 
             while (
                 this.hasParent(currentIndex) &&
-                this.compare.lessThan(this.heapContainer[currentIndex], this.parent(currentIndex))
+                this.lessThan(this.heap[currentIndex], this.parent(currentIndex))
             ) {
                 this.swap(currentIndex, this.getParentIndex(currentIndex));
                 currentIndex = this.getParentIndex(currentIndex);
             }
         }
 
-        shiftDown(customStartIndex) {
-            // Compare the root element to its children and swap root with the smallest
-            // of children. Do the same for next children after swap.
-            let currentIndex = customStartIndex || 0;
-            let nextIndex = null;
-
-            while (this.hasLeftChild(currentIndex)) {
-            if (
-                this.hasRightChild(currentIndex) &&
-                this.compare.lessThan(this.rightChild(currentIndex), this.leftChild(currentIndex))
-            ) {
-                nextIndex = this.getRightChildIndex(currentIndex);
-            } else {
-                nextIndex = this.getLeftChildIndex(currentIndex);
-            }
-
-            if (this.compare.lessThan(this.heapContainer[currentIndex], this.heapContainer[nextIndex])) {
-                break;
-            }
-
-            this.swap(currentIndex, nextIndex);
-            currentIndex = nextIndex;
-            }
+        /**
+         * 交换
+         */
+        swap(currentIndex, swapNodeIndex) {
+            [this.heap[currentIndex], this.heap[swapNodeIndex]] = [this.heap[swapNodeIndex], this.heap[currentIndex]];
+        }
+        
+        lessThan(node, compareNode) {
+            return node.value < compareNode.value;
         }
 
-        getLeftChildIndex(parentIndex) {
-            return (2 * parentIndex) + 1;
+        eq(node, compareNode) {
+            return node.value === compareNode.value;
         }
 
-        getRightChildIndex(parentIndex) {
-            return (2 * parentIndex) + 2;
-        }
-
-        getParentIndex(childIndex) {
-            return Math.floor((childIndex - 1) / 2);
-        }
-
+        /**
+         * 是否包含父节点
+         */
         hasParent(childIndex) {
             return this.getParentIndex(childIndex) >= 0;
         }
 
-        hasLeftChild(parentIndex) {
-            return this.getLeftChildIndex(parentIndex) < this.heapContainer.length;
+        /**
+        * 获取父节点所在堆中的索引
+        */
+        getParentIndex(childIndex) {
+            return Math.floor((childIndex - 1) / 2);
         }
 
-        hasRightChild(parentIndex) {
-            return this.getRightChildIndex(parentIndex) < this.heapContainer.length;
-        }
-
-        leftChild(parentIndex) {
-            return this.heapContainer[this.getLeftChildIndex(parentIndex)];
-        }
-
-        rightChild(parentIndex) {
-            return this.heapContainer[this.getRightChildIndex(parentIndex)];
-        }
-
+        /**
+        * 获取父节点
+        */
         parent(childIndex) {
-            return this.heapContainer[this.getParentIndex(childIndex)];
+            return this.heap[this.getParentIndex(childIndex)];
         }
 
-        swap(indexOne, indexTwo) {
-            const tmp = this.heapContainer[indexTwo];
-            this.heapContainer[indexTwo] = this.heapContainer[indexOne];
-            this.heapContainer[indexOne] = tmp;
-        }
+        /**
+        * 查找
+        */
+        find(node) {
+            const foundNodeIndexs = [];
 
-        peek() {
-            if (this.heapContainer.length === 0) {
-            return null;
-            }
-
-            return this.heapContainer[0];
-        }
-
-        poll() {
-            if (this.heapContainer.length === 0) {
-            return null;
-            }
-
-            if (this.heapContainer.length === 1) {
-            return this.heapContainer.pop();
-            }
-
-            const item = this.heapContainer[0];
-
-            // Move the last element from the end to the head.
-            this.heapContainer[0] = this.heapContainer.pop();
-            this.shiftDown();
-
-            return item;
-        }
-
-        remove(item, customFindingComparator) {
-            // Find number of items to remove.
-            const customComparator = customFindingComparator || this.compare;
-            const numberOfItemsToRemove = this.find(item, customComparator).length;
-
-            for (let iteration = 0; iteration < numberOfItemsToRemove; iteration += 1) {
-            // We need to find item index to remove each time after removal since
-            // indices are being change after each heapify process.
-            const indexToRemove = this.find(item, customComparator).pop();
-
-            // If we need to remove last child in the heap then just remove it.
-            // There is no need to heapify the heap afterwards.
-            if (indexToRemove === (this.heapContainer.length - 1)) {
-                this.heapContainer.pop();
-            } else {
-                // Move last element in heap to the vacant (removed) position.
-                this.heapContainer[indexToRemove] = this.heapContainer.pop();
-
-                // Get parent.
-                const parentItem = this.hasParent(indexToRemove) ? this.parent(indexToRemove) : null;
-                const leftChild = this.hasLeftChild(indexToRemove) ? this.leftChild(indexToRemove) : null;
-
-                // If there is no parent or parent is less then node to delete then heapify down.
-                // Otherwise heapify up.
-                if (
-                leftChild !== null &&
-                (
-                    parentItem === null ||
-                    this.compare.lessThan(parentItem, this.heapContainer[indexToRemove])
-                )
-                ) {
-                this.shiftDown(indexToRemove);
-                } else {
-                this.shiftUp(indexToRemove);
+            for (let itemIndex = 0; itemIndex < this.heap.length; itemIndex += 1) {
+                if (this.eq(node, this.heap[itemIndex])) {
+                    foundNodeIndexs.push(itemIndex);
                 }
             }
+
+            return foundNodeIndexs;
+        }
+
+         /**
+          * 是否存在左子节点
+          */
+        hasLeftChild(parentIndex) {
+            return this.getLeftChildIndex(parentIndex) < this.heap.length;
+        }
+
+        /**
+         * 获取左子节点索引
+         */
+        getLeftChildIndex(parentIndex) {
+            return (2 * parentIndex) + 1;
+        }
+
+        /**
+         * 获取左子节点
+         */
+        leftChild(parentIndex) {
+            return this.heap[this.getLeftChildIndex(parentIndex)];
+        }
+
+        /**
+         * 是否包含右子节点
+         */
+        hasRightChild(parentIndex) {
+            return this.getRightChildIndex(parentIndex) < this.heap.length;
+        }
+
+        /**
+         * 获取右子节点索引
+         */
+        getRightChildIndex(parentIndex) {
+            return (2 * parentIndex) + 2;
+        }
+
+        /**
+         * 获取右子节点
+         */
+        rightChild(parentIndex) {
+            return this.heap[this.getRightChildIndex(parentIndex)];
+        }
+
+        /**
+         * 下沉
+         */
+        down(startIndex) {
+            let currentIndex = startIndex || 0;
+            let nextIndex = null;
+
+            while (this.hasLeftChild(currentIndex)) {
+                if (
+                    this.hasRightChild(currentIndex) &&
+                    this.lessThan(this.rightChild(currentIndex), this.leftChild(currentIndex))
+                ) {
+                    nextIndex = this.getRightChildIndex(currentIndex);
+                } else {
+                    nextIndex = this.getLeftChildIndex(currentIndex);
+                }
+
+                if (this.lessThan(this.heap[currentIndex], this.heap[nextIndex])) {
+                    break;
+                }
+
+                this.swap(currentIndex, nextIndex);
+                currentIndex = nextIndex;
+            }
+        }
+
+        remove(node) {
+            const numberOfItemsToRemove = this.find(node).length;
+
+            for (let iteration = 0; iteration < numberOfItemsToRemove; iteration += 1) {
+                // 取一个要移除的索引
+                const indexToRemove = this.find(item).pop();
+
+                // 如果移除的索引就是堆长度 - 1则直接弹出
+                if (indexToRemove === (this.heap.length - 1)) {
+                    this.heap.pop();
+                } else {
+                    // 将最后一个节点赋给移除的索引位置
+                    this.heap[indexToRemove] = this.heap.pop();
+
+                    const parentNode = this.hasParent(indexToRemove) ? this.parent(indexToRemove) : null;
+                    const leftChild = this.hasLeftChild(indexToRemove) ? this.leftChild(indexToRemove) : null;
+
+                    if (
+                        leftChild !== null &&
+                        (
+                            parentNode === null ||
+                            this.lessThan(parentNode, this.heap[indexToRemove])
+                        )
+                    ) {
+                        this.down(indexToRemove);
+                    } else {
+                        this.up(indexToRemove);
+                    }
+                }
             }
 
             return this;
-        }
-
-        find(item, customComparator) {
-            const foundItemIndices = [];
-            const comparator = customComparator || this.compare;
-
-            for (let itemIndex = 0; itemIndex < this.heapContainer.length; itemIndex += 1) {
-            if (comparator.equal(item, this.heapContainer[itemIndex])) {
-                foundItemIndices.push(itemIndex);
-            }
-            }
-
-            return foundItemIndices;
         }
     }
 ```
