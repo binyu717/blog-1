@@ -230,6 +230,9 @@
             this.heap = [];
         }
 
+        /**
+         * 添加节点
+         */
         add(node) {
             this.heap.push(node);
             this.shiftUp();
