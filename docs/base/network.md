@@ -66,18 +66,25 @@
   - 500：服务器出错;
   - 503：服务器暂时无法使用;
 
+### cookie
+- 浏览器常用的一种缓存数据的形式;
+- 设置响应头Set-Cookie：'id=123'或Set-Cookie：['id=123;max-age=2', 'name=666;domain=root.com']，可使浏览器缓存cookie数据;
+
+### http长连接
+- 方便复用tcp/ip连接，支持并发http请求，提高请求效率;
+- 设置响应头Connection: 'close' 可关闭每次请求的长连接保持，让每一个请求都重新建立tcp/ip连接;
+
 ### cors跨域请求
 - 概念：浏览器端请求方的url中协议、主机号、端口号和资源所在服务器映射的协议、主机号、端口号只要存在一个不同，则服务器拒绝被访问造成跨域;
 - 解决：
   - jsonp：利用script标签允许跨域请求机制将客户端定义的接受数据的函数传递给后端，让后端通过在js环境调用此方法并传入响应参数回调给客户端;
   - 服务器端设置Access-Control-Allow-Origin允许跨域访问;
 
-### 响应头缓存
+### http头缓存
 - Cache-Control缓存：
-  - public、private、no-cache（不缓存页面信息）;
+  - public、private、no-cache（不缓存页面信息）、no-store（不缓存请求和响应信息）、no-transform（不允许代理服务器压缩、优化内容）;
   - max-age=SECONDS（最大缓存到期时间）、s-maxage=SECONDS（代理的最大缓存到期时间）、max-stale=SECONDS（过期之后允许的最大缓存到期时间）;
   - must-revalidate（设置过期后，如果已经过期，必须重新从服务器发送请求获取数据验证是否真过期，不能直接取缓存）、proxy-revalidate（针对缓存服务器，过期后也必须重新校验）;
-  - no-store（不缓存请求和响应信息）、no-transform（不允许代理服务器压缩、优化内容）;
 - Last-Modified：最后的资源更新时间，超过时间重新获取缓存;
 - Etag：资源唯一性签名（hash之类的保证唯一性的签名）;
 
@@ -91,13 +98,13 @@
   - Content-Encoding（响应压缩类型）;
   - Content-Language（响应语言）;
 
-### cookie
-- 浏览器常用的一种缓存数据的形式;
-- 设置响应头Set-Cookie：'id=123'或Set-Cookie：['id=123;max-age=2', 'name=666;domain=root.com']，可使浏览器缓存cookie数据;
-
-### http长连接
-- 方便复用tcp/ip连接，支持并发http请求，提高请求效率;
-- 设置响应头Connection: 'close' 可关闭每次请求的长连接保持，让每一个请求都重新建立tcp/ip连接;
+### http头安全，CSP（Content-Security-Policy）
+- 作用：资源安全，限制资源获取、报告资源获取越权;
+- Content-Security-Policy（可避免XSS攻击等脚本注入）：
+  - 'default-src http: https:'，只允许资源来自http、https请求;
+  - 'default-src \'self\''，只允许来自同域下的资源;
+  - 'form-action \'self\''，限制form表单提交的目标源;
+- Content-Security-Policy-Report-Only：不强制限制资源请求和提交，只报告问题，值和Content-Security-Policy相同;
 
 ### SSL
 - SSL(Secure Sockets Layer 安全套接层),及其继任者传输层安全（Transport Layer Security，TLS）是为网络通信提供安全及数据完整性的一种安全协议。TLS与SSL在传输层对网络连接进行加密;

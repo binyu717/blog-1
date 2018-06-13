@@ -7,7 +7,6 @@ module.exports = {
   ],
   themeConfig: {
     nav: [
-      { text: '首页', link: '/' },
       { text: 'vuepress', link: 'http://caibaojian.com/vuepress/' },
     ],
     sidebar: [
