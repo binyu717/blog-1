@@ -259,12 +259,12 @@
             [this.heap[currentIndex], this.heap[swapNodeIndex]] = [this.heap[swapNodeIndex], this.heap[currentIndex]];
         }
         
-        lessThan(node, compareNode) {
-            return node.value < compareNode.value;
+        lessThan(value, compareValue) {
+            return value < compareValue;
         }
 
-        eq(node, compareNode) {
-            return node.value === compareNode.value;
+        eq(value, compareValue) {
+            return value === compareValue;
         }
 
         /**
@@ -369,6 +369,21 @@
                 this.swap(currentIndex, nextIndex);
                 currentIndex = nextIndex;
             }
+        }
+
+        /**
+         * 获取顶部元素
+         */
+        popTop() {
+            if (this.heap.length === 0) return null;
+            if (this.heap.length === 1) return this.heap.pop();
+
+            const value = this.heap[0];
+            this.heap[0] = this.heap.pop();
+
+            this.down();
+            
+            return value;
         }
 
         remove(node) {

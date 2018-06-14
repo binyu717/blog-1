@@ -35,6 +35,10 @@
 
 ### http协议
 - 概念：超文本传输协议（HyperText Transfer Protocol），在互联网应用最广泛的协议之一，最初目的用于发送接收html页面;
+- 版本：
+  - 0.9：只允许客户端发送GET这一种请求，且不支持请求头;
+  - 1.0：支持头信息、响应对象不局限超文本、支持GET、POST、HEAD方法请求，支持长连接（默认使用短连接）;
+  - 1.1：keepalive连接、新增OPTIONS,PUT, DELETE, TRACE等方法;
 - 请求报文
   - 首行：请求方式（get、post等等）、url、http版本（http/1.0）;
   - 请求头：希望接收的数据类型（Accept），语言（Accept-Language）等;
