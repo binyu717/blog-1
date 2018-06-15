@@ -85,7 +85,7 @@
   - 形成条件：display为inline、inline-block的外层会形成IFC环境，用于水平居中内联元素或内联元素垂直居中;
 - GFC
   - 概念：网格布局格式化上下文;
-  - 形成条件：display设置为grid;
+  - 形成条件：display设置为grid、inline-grid;
 - FFC
   - 概念：自适应格式化上下文;
   - 形成条件：display设置为flex、inline-flex;

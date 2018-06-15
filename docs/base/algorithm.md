@@ -184,3 +184,106 @@
         return sortedArr;
     }
 ```
+
+### 归并排序
+- 图例（来自推荐链接）：
+- <img src="https://camo.githubusercontent.com/64ba2bcbd5c11779657e40a1d03d0ea691f6fa57/68747470733a2f2f75706c6f61642e77696b696d656469612e6f72672f77696b6970656469612f636f6d6d6f6e732f632f63632f4d657267652d736f72742d6578616d706c652d33303070782e676966">
+- js实现：
+```js
+    // 入口
+    function mergeSort (arr) {
+        const middleIndex = Math.floor(arr.length / 2);
+        const leftArray = arr.slice(0, middleIndex);
+        const rightArray = arr.slice(middleIndex, arr.length);
+        // 借用快速排序
+        const leftSortedArray = quickSort(leftArray);
+        const rightSortedArray = quickSort(rightArray);
+
+        return this.mergeSortedArrays(leftSortedArray, rightSortedArray);
+    }
+
+    function mergeSortedArrays(leftArray, rightArray) {
+        let sortedArray = [];
+
+        while (leftArray.length && rightArray.length) {
+            let min = null;
+
+            if (leftArray[0] <= rightArray[0]) {
+                min = leftArray.shift();
+            } else {
+                min = rightArray.shift();
+            }
+
+            // 每次对比最小值放到临时数组中
+            sortedArray.push(min);
+        }
+
+        return sortedArray;
+    }
+```
+
+### 快速排序
+- 图例（来自推荐链接）：
+- <img src="https://camo.githubusercontent.com/2499d89bbb30337a5d2d7770cc034b4b71fbfdc6/68747470733a2f2f75706c6f61642e77696b696d656469612e6f72672f77696b6970656469612f636f6d6d6f6e732f362f36612f536f7274696e675f717569636b736f72745f616e696d2e676966">
+- js实现：
+```js
+    function quickSort (array) {
+        if (array.length <= 1) return array;
+
+        const leftArray = [];
+        const rightArray = [];
+
+        // 提取中间元素
+        const pivotValue = array.shift();
+        const centerArray = [pivotValue];
+
+        while (array.length) {
+            const curValue = array.shift();
+
+            if (curValue === pivotValue) {
+                centerArray.push(curValue);
+            } else if (curValue < pivotValue) {
+                leftArray.push(curValue);
+            } else {
+                rightArray.push(curValue);
+            }
+        }
+
+        const leftArraySorted = quickSort(leftArray);
+        const rightArraySorted = quickSort(rightArray);
+
+        return leftArraySorted.concat(centerArray, rightArraySorted);
+    }
+```
+
+### 希尔排序
+- 图例（来自推荐链接）：
+- <img src="https://camo.githubusercontent.com/e513df288e0848b06be6aaddd915b49045243985/68747470733a2f2f7777772e7475746f7269616c73706f696e742e636f6d2f646174615f737472756374757265735f616c676f726974686d732f696d616765732f7368656c6c5f736f72745f6761705f342e6a7067">
+- js实现：
+```js
+    function shellSort (array) {
+        // 定义对比值的索引距离差
+        let gap = Math.floor(array.length / 2);
+
+        while (gap > 0) {
+            for (let i = 0; i < (array.length - gap); i++) {
+                let currentIndex = i;
+                let gapShiftedIndex = i + gap;
+
+                while (currentIndex >= 0) {
+                    if (array[gapShiftedIndex] < array[currentIndex]) {
+                        [array[gapShiftedIndex], array[currentIndex]] = [array[currentIndex], array[gapShiftedIndex]];
+                    }
+
+                    gapShiftedIndex = currentIndex;
+                    currentIndex -= gap;
+                }
+            }
+
+            // 将索引比较间距缩小后再次遍历排序
+            gap = Math.floor(gap / 2);
+        }
+
+        return array;
+    }
+```
