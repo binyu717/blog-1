@@ -86,11 +86,19 @@
 
 ### http头缓存
 - Cache-Control缓存：
-  - public、private、no-cache（不缓存页面信息）、no-store（不缓存请求和响应信息）、no-transform（不允许代理服务器压缩、优化内容）;
-  - max-age=SECONDS（最大缓存到期时间）、s-maxage=SECONDS（代理的最大缓存到期时间）、max-stale=SECONDS（过期之后允许的最大缓存到期时间）;
-  - must-revalidate（设置过期后，如果已经过期，必须重新从服务器发送请求获取数据验证是否真过期，不能直接取缓存）、proxy-revalidate（针对缓存服务器，过期后也必须重新校验）;
+  - public;
+  - private（只允许浏览器缓存，不允许代理服务器缓存）;
+  - no-cache（不缓存页面信息）;
+  - no-store（所有位置如代理服务器等位置都不缓存）;
+  - no-transform（不允许代理服务器压缩、优化内容）;
+  - max-age=SECONDS（最大缓存到期时间）;
+  - s-maxage=SECONDS（代理的最大缓存到期时间）;
+  - max-stale=SECONDS（过期之后允许的最大缓存到期时间）;
+  - must-revalidate（设置过期后，如果已经过期，必须重新从服务器发送请求获取数据验证是否真过期，不能直接取缓存）;
+  - proxy-revalidate（针对缓存服务器，过期后也必须重新校验）;
 - Last-Modified：最后的资源更新时间，超过时间重新获取缓存;
 - Etag：资源唯一性签名（hash之类的保证唯一性的签名）;
+- Vary：定义取缓存的http头的Key，Key相同则取对应缓存;
 
 ### 数据协商
 - 请求方：
