@@ -7,7 +7,7 @@
 - [vue开源项目](https://github.com/opendigg/awesome-github-vue);
 - [梁少峰Vue源码解析](https://github.com/youngwind/blog);
 - [滴滴Vue源码解析](https://github.com/DDFE/DDFE-blog);
-- [滴滴vue技术揭秘](https://ustbhuangyi.github.io/vue-analysis/doc/);
+- [滴滴vue技术揭秘](https://ustbhuangyi.github.io/vue-analysis/);
 - [Vue虚拟DOM](http://www.cnblogs.com/xuntu/p/6800547.html);
 - [Vue2的MVVM](https://github.com/wangfupeng1988/learn-vue2-mvvm);
 - [vue-cli多页面打包配置](https://juejin.im/post/5a8e3f00f265da4e747fc700);
