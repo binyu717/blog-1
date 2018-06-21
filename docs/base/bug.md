@@ -1,4 +1,7 @@
-## 布局
+## 原理
+
+### display: flex内文本溢出隐藏无效
+- 改为利用 `display: flex` 控制布局，子元素不设置`display: flex`然后控制文本溢出;
 
 ### 滚动容器设置padding后，内容部分超出，右边滚动顶后不产生padding
 - 滚动容器配置：overflow: auto;不要配置padding;
