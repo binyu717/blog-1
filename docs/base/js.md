@@ -272,6 +272,9 @@
 - 优点：容易进行静态分析面向未来的 EcmaScript 标准;
 - 弊端：只有少数浏览器支持此规范，兼容性不好;
 
+### UMD规范
+- 概念：通用模块定义（Universal Module Definition），类似AMD和CommonJS的结合，UMD先判断是否支持CommonJS模块api，然后判断是否支持AMD规范api，采取存在的模块规范api;
+
 
 ## 架构
 
