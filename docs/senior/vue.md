@@ -75,8 +75,26 @@
   - actions：用于提交mutation，支持异步;
   - modules：用于将大型应用store分割成子模块，便于模块内部管理自己的状态;
 
+## 项目构建
 
-## 原理
+### runtime only 和 runtime + compiler区别
+- runtime only：vue渲染最终通过render，选择此模式只能通过render函数渲染vue页面，不能采用template，因为template需要编译，而通常vue文件是通过vue-loader进行编译的，但是在main.js中new Vue时必须采用render，此方式生成的代码更轻量，因为没有加入编译过程代码;
+- runtime + compiler：自带编译器，但是编译过程消耗资源和性能，所以通常推荐采用 runtime only 模式;
+
+## 原理(2.5.16)
+
+### vue入口
+- 调用全局函数 `initGlobalAPI()` 初始化Vue全局api;
+  - `Object.defineProperty(Vue, 'config', configDef)`：初始化`Vue.config`上的全局配置属性，例如：devtools、silent等属性;
+  - 初始化`Vue.set`、`Vue.delete`、`Vue.nextTick`等方法;
+  - 初始化`Vue.options`上的属性，例如：`components`、`directives`、`filters`，然后`Vue.options._base = Vue`挂载`Vue`给`_base`属性，然后`extend(Vue.options.components, builtInComponents)`继承初始化`Vue.options.components`属性，`builtInComponents`默认是：`KeepAlive`组件;
+  - `initUse(Vue)`初始化`Vue.use`方法的功能;
+  - `initMixin(Vue)`初始化`Vue.mixin`方法的功能;
+  - `initExtend(Vue)`初始化`Vue.extend`方法的功能;
+  - `initAssetRegisters(Vue)`初始化`Vue.component`、`Vue.directive`、`Vue.filter`方法的功能;
+
+### new Vue()做了什么
+- 
 
 ### 生命周期
 - 初始化vue实例（new Vue）;
