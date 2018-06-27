@@ -87,34 +87,22 @@
 - 调用全局函数 `initGlobalAPI()` 初始化Vue全局api;
   - `Object.defineProperty(Vue, 'config', configDef)`：初始化`Vue.config`上的全局配置属性，例如：devtools、silent等属性;
   - 初始化`Vue.set`、`Vue.delete`、`Vue.nextTick`等方法;
-  - 初始化`Vue.options`上的属性，例如：`components`、`directives`、`filters`，然后`Vue.options._base = Vue`挂载`Vue`给`_base`属性，然后`extend(Vue.options.components, builtInComponents)`继承初始化`Vue.options.components`属性，`builtInComponents`默认是：`KeepAlive`组件;
+  - 初始化`Vue.options`上的属性，例如：`components`、`directives`、`filters`，然后`Vue.options._base = Vue`挂载`Vue`给`_base`属性，然后`extend(Vue.options.components, builtInComponents)`将`builtInComponents`中的组件`KeepAlive`初始化继承到`Vue.options.components`对象中;
   - `initUse(Vue)`初始化`Vue.use`方法的功能;
   - `initMixin(Vue)`初始化`Vue.mixin`方法的功能;
   - `initExtend(Vue)`初始化`Vue.extend`方法的功能;
   - `initAssetRegisters(Vue)`初始化`Vue.component`、`Vue.directive`、`Vue.filter`方法的功能;
 
 ### new Vue()做了什么
-- 
-
-### 生命周期
-- 初始化vue实例（new Vue）;
-- beforeCreate之前的工作：
-  - initLifecycle（初始化`$parent`、`$root`、`$children`、`$refs`等属性到实例上）;
-  - initEvents（初始化`_events`、`$on`、`$once`、`$off`等事件相关属性到实例上）;
-  - initRender（初始化`_vnode`、`$slots`、`$createElement`等和节点和dom渲染相关属性和方法到实例上）;
-- created之前的工作：
-  - initInjections;
-  - initState（初始化props、data、computed、methods、watch属性）;
-  - initProvide;
-- beforeMount之前的工作：
-  - 挂载 el 属性到 vm.$el;
-  - 将 template 编译成 render 函数，或将 el 属性 outHTML 内容编译成 template;
-- mounted之前的工作：
-  - 利用vue生成 dom 替换原来 el 挂载元素，渲染元素; 
-- beforeUpdate（监听到更新，更新之前）;
-- updated（更新之后）;
-- beforeDestroy（vue实例销毁之前）;
-- destroyed（vue实例销毁之后）; 
+- 在`Vue`构造函数中通过`this._init(options)`初始化vue实例数据;
+  - `initLifecycle(vm)`
+  - `initEvents(vm)`
+  - `initRender(vm)`
+  - `callHook(vm, 'beforeCreate')`触发`beforeCreate`回调;
+  - `initInjections(vm)`
+  - `initState(vm)`
+  - `initProvide(vm)`
+  - `callHook(vm, 'created')`触发`created`回调;
 
 ### 虚拟DOM
 - 产生原生：js中操作dom效率低下，因为真实 dom 属性众多，整个dom树体系庞大，频繁操作dom影响性能；前端主要任务就是维护状态和更新视图，必定会需要大量的操作dom，所以很容易降低渲染效率;
