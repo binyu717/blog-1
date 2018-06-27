@@ -128,7 +128,8 @@
 - 在代码执行之前，引入 babel-polyfill;
 
 ### 属性赋值对视图渲染无效
-- 多数情况是所操作的视图绑定属性，在初始化实例data属性的时候没有被追加，后期追加的属性采用 Vue.set 或 this.$set 追加可有效避免这种情况;
+- 初始化data时未追加，可通过`Vue.set`或`this.$set`方法修改数据避免；
+- 子组件不规范（未通过sync修饰符）的操作父组件通过 props 传递的数据，应尽量避免子组件过多操作props数据;
 
 ### Error in nextTick: "InvalidCharacterError: Failed to execute 'setAttribute' on 'Element': '}' is not a valid attribute name."
 - 类似这种错误，一般是由于html模板中，自已在元素属性上加了vue无法识别的属性名，比如上面的报错中是不识别 '}' 说明模板中有误写了 '}' 到属性中;
