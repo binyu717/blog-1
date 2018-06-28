@@ -101,9 +101,17 @@
   - `callHook(vm, 'beforeCreate')`触发`beforeCreate`回调;
   - `initInjections(vm)`
   - `initState(vm)`初始化实例的`props、methods、data、computed、watch`等属性;
-    - 
+    - `initProps(vm, opts.props)`;
+    - `initMethods(vm, opts.methods)`;
+    - `initData(vm)`;
+      - 遍历`vm._data`的属性，通过`proxy(vm, '_data', key)`代理`vm._data`上所有数据get和set，使直接操作vm上的属性可触发`vm._data`上同名属性的set和get达到挂载属性改变被监听的目的;
+    - `initComputed(vm, opts.computed)`;
+    - `initWatch(vm, opts.watch)`;
   - `initProvide(vm)`
   - `callHook(vm, 'created')`触发`created`回调;
+  - `vm.$mount(vm.$options.el)`挂载`el`元素，`$mount`的定义在 `entry-runtime-with-compiler.js`，此模式是带编译的版本;
+    - `const mount = Vue.prototype.$mount`先缓存`runtime`非编译版本的`mount`方法；
+
 
 ### 虚拟DOM
 - 产生原生：js中操作dom效率低下，因为真实 dom 属性众多，整个dom树体系庞大，频繁操作dom影响性能；前端主要任务就是维护状态和更新视图，必定会需要大量的操作dom，所以很容易降低渲染效率;
