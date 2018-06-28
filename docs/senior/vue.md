@@ -100,7 +100,8 @@
   - `initRender(vm)`
   - `callHook(vm, 'beforeCreate')`触发`beforeCreate`回调;
   - `initInjections(vm)`
-  - `initState(vm)`
+  - `initState(vm)`初始化实例的`props、methods、data、computed、watch`等属性;
+    - 
   - `initProvide(vm)`
   - `callHook(vm, 'created')`触发`created`回调;
 
