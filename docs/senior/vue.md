@@ -98,7 +98,7 @@
   - `initLifecycle(vm)`
   - `initEvents(vm)`
   - `initRender(vm)`
-  - `callHook(vm, 'beforeCreate')`触发`beforeCreate`回调;
+  - `callHook(vm, 'beforeCreate')`触发生命周期回调;
   - `initInjections(vm)`
   - `initState(vm)`初始化实例的`props、methods、data、computed、watch`等属性;
     - `initProps(vm, opts.props)`;
@@ -110,8 +110,17 @@
   - `initProvide(vm)`
   - `callHook(vm, 'created')`触发`created`回调;
   - `vm.$mount(vm.$options.el)`挂载`el`元素，`$mount`的定义在 `entry-runtime-with-compiler.js`，此模式是带编译的版本;
-    - `const mount = Vue.prototype.$mount`先缓存`runtime`非编译版本的`mount`方法；
-
+    - `const mount = Vue.prototype.$mount`先缓存`runtime`非编译版本的`mount`方法，留着后面用，然后重新在Vue原型上定义新的`$mount`方法；
+    - `el = el && query(el)`获取元素；
+    - `if (el === document.body || el === document.documentElement)`判断避免直接挂载在根元素上，因为后面会替换掉自身;
+    - `if (!options.render)`如果没有自定义`render`，则取`options.template`然后获取模板HTML，
+    - 通过`compileToFunctions`方法将`template`编译成`render`函数;
+    - 调用开始缓存的`mount`方法挂载`el`，`mount`中通过`mountComponent(this, el, hydrating)`挂载组件;
+    - 在`mountComponent`中，通过`vm.$el = el`将`el`挂载到`$el`上;
+    - `callHook(vm, 'beforeMount')`触发生命周期回调;
+    - 定义 `updateComponent`方法，此方法内通过调用`vm._update`方法更新dom，然后`new Watcher`监听视图更新;
+    - `Watcher`中的`before`钩子中通过`callHook(vm, 'beforeUpdate')`触发生命周期函数;
+    - `callHook(vm, 'mounted')`触发生命周期回调，最后返回vue实例;
 
 ### 虚拟DOM
 - 产生原生：js中操作dom效率低下，因为真实 dom 属性众多，整个dom树体系庞大，频繁操作dom影响性能；前端主要任务就是维护状态和更新视图，必定会需要大量的操作dom，所以很容易降低渲染效率;
