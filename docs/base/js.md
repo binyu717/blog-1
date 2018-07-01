@@ -148,6 +148,17 @@
 
 ## 优化
 
+### 函数柯里化
+- 作用：把接受多个参数的函数变换成接受一个单一参数的函数，并能保留创建此单一参数的函数外当初的其它参数；
+- 例：
+```js
+	const getNewFuc = function (srcParam, ...addParams) {
+		return function (srcParam) {
+			return addParams;
+		}
+	}
+```
+
 ### 防抖(debounce)和节流(throttle)
 - 作用：用于高频事件触发导致效率低下的解决方案，例如resize、scroll、mousedown、mousemove、keyup、keydown等等容易频繁触发的事件;
 - 防抖：用于只需要在高频触发事件停止时触发业务的场景，demo如下：

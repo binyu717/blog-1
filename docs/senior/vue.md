@@ -109,7 +109,7 @@
     - `initWatch(vm, opts.watch)`;
   - `initProvide(vm)`
   - `callHook(vm, 'created')`触发`created`回调;
-  - `vm.$mount(vm.$options.el)`挂载`el`元素，`$mount`的定义在 `entry-runtime-with-compiler.js`，此模式是带编译的版本;
+  - `vm.$mount(vm.$options.el)`挂载`el`元素，`$mount`的定义在源码 `entry-runtime-with-compiler.js`，此模式是带编译的版本;
     - `const mount = Vue.prototype.$mount`先缓存`runtime`非编译版本的`mount`方法，留着后面用，然后重新在Vue原型上定义新的`$mount`方法；
     - `el = el && query(el)`获取元素；
     - `if (el === document.body || el === document.documentElement)`判断避免直接挂载在根元素上，因为后面会替换掉自身;
@@ -118,12 +118,18 @@
     - 调用开始缓存的`mount`方法挂载`el`，`mount`中通过`mountComponent(this, el, hydrating)`挂载组件;
     - 在`mountComponent`中，通过`vm.$el = el`将`el`挂载到`$el`上;
     - `callHook(vm, 'beforeMount')`触发生命周期回调;
-    - 定义 `updateComponent`方法，此方法内通过调用`vm._update`方法更新dom，然后`new Watcher`监听视图更新;
+    - 定义 `updateComponent`方法，此方法内通过调用`vm._render()`获取虚拟dom，然后通过`vm._update`方法传递虚拟dom来更新真实的dom，然后`new Watcher`监听视图更新，需要更新时调用`updateComponent`;
+      - `vm._render`中通过`vnode = render.call(vm._renderProxy, vm.$createElement)`获取虚拟dom节点，`vm.$createElement`是创建虚拟dom的方法;
+        - `$createElement`中判断非原生标签，则通过`createComponent`方法创建组件的虚拟dom；
+        - `createComponent`中通过`baseCtor.extend(Ctor)`继承构造器（extend在源码`core\global-api\extend.js`中）；
+      - `vm._update`方法中通过`vm.__patch__`初始化或更新dom；`__patch__`在源码`runtime/index.js`中定义，
+      - `patch`方法（在源码`core\vdom\patch.js`）中通过`createElm`方法将虚拟dom转化为真实dom，`createElm`方法中通过`nodeOps.createElement`（内部通过`document.createElement`原生方法创建dom），然后通过`createChildren`方法递归子虚拟dom，最后通过`insert`方法插入dom；
+
     - `Watcher`中的`before`钩子中通过`callHook(vm, 'beforeUpdate')`触发生命周期函数;
     - `callHook(vm, 'mounted')`触发生命周期回调，最后返回vue实例;
 
 ### 虚拟DOM
-- 产生原生：js中操作dom效率低下，因为真实 dom 属性众多，整个dom树体系庞大，频繁操作dom影响性能；前端主要任务就是维护状态和更新视图，必定会需要大量的操作dom，所以很容易降低渲染效率;
+- 产生原生：js中操作dom效率低下，因为浏览器所构建的dom设计非常复杂，整个dom树体系庞大，频繁操作 dom 影响性能；前端主要任务就是维护状态和更新视图，必定会需要大量的操作dom，所以很容易降低渲染效率;
 - 核心思想：提供一种方便的工具，保证最小化的 dom 操作，提高视图渲染效率;
 - 核心实现：JS对象操作比 dom 操作效率快，所以对 dom 的改变，首先并不会真正的操作实际 dom，而是会通过虚拟dom（即模拟dom结构的js对象）进行属性对比后确认真正改变的属性，再对真实的 dom 进行操作;
 
