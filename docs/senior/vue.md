@@ -74,6 +74,7 @@
   - mutations：用于改变state状态的唯一提交方法，只支持同步;
   - actions：用于提交mutation，支持异步;
   - modules：用于将大型应用store分割成子模块，便于模块内部管理自己的状态;
+    - 子模块访问state属性：store.state.childModule.prop；
 
 ## 项目构建
 
@@ -136,12 +137,12 @@
 
 ## bug
 
-### vuex不兼容IE(例如：Promise”未定义、或vuex报错vuex requires a Promise polyfill in this browser)
-- 在代码执行之前，引入 babel-polyfill;
-
 ### 属性赋值对视图渲染无效
 - 初始化data时未追加，可通过`Vue.set`或`this.$set`方法修改数据避免；
 - 子组件不规范（未通过sync修饰符）的操作父组件通过 props 传递的数据，应尽量避免子组件过多操作props数据;
+
+### vuex不兼容IE(例如：Promise”未定义、或vuex报错vuex requires a Promise polyfill in this browser)
+- 在代码执行之前，引入 babel-polyfill;
 
 ### Error in nextTick: "InvalidCharacterError: Failed to execute 'setAttribute' on 'Element': '}' is not a valid attribute name."
 - 类似这种错误，一般是由于html模板中，自已在元素属性上加了vue无法识别的属性名，比如上面的报错中是不识别 '}' 说明模板中有误写了 '}' 到属性中;

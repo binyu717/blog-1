@@ -81,3 +81,9 @@
 
 ### 为使上传相同附件生效，会重置 input.value = ''；部分浏览器会重新触发 input 的 change 事件
 - change入口处判断 input.value 为空则直接 return，避免不必要的代码执行;
+
+
+## 小程序
+
+### we-cropper插件和Array原型定义冲突：
+- 使用`we-cropper`插件时，因为项目小程序上在`Array`原型上定义了方法，导致真机上截图滑动黑屏，所以想使用此插件不能定义`Array`上的原型；
